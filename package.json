@@ -1,0 +1,16 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "DevTinder",
+  "main": "index.js",
+  "scripts": {
+    "start":"node src/app.js",
+    "dev":"npx nodemon src/app.js"
+  },
+  "author": "Soumay Sikchi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "nodemon": "^3.1.9"
+  }
+}
