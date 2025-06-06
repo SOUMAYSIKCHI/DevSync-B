@@ -34,7 +34,6 @@ cloudinary.cloudinaryConnect();
 // 🔒 Global Middlewares
 // ---------------------------------------------
 app.use(cors({
-  // origin:"http://localhost:5173",
   origin:'http://3.109.253.167/',
   credentials:true,
 }));
