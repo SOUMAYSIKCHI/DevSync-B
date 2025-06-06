@@ -22,7 +22,6 @@ npm install -g nodemon
 git init
 git add .
 git commit -m "msg"
-git remote add origin https://github.com/SOUMAYSIKCHI/DevTinder.git
 git branch -M main
 git push -u origin main
 
