@@ -35,7 +35,7 @@ cloudinary.cloudinaryConnect();
 // ---------------------------------------------
 app.use(cors({
   // origin:"http://localhost:5173",
-  origin:'https://devsync-pearl.vercel.app',
+  origin:'http://3.109.253.167/',
   credentials:true,
 }));
 
@@ -61,14 +61,14 @@ app.use(fileupload({
 // ---------------------------------------------
 // 🛣️ Routes
 // ---------------------------------------------
-app.use("/api/v1/profile", profileRouter); // Handles all /profile-related endpoints
-app.use("/api/v1/request", reqRouter);     // Handles /request-related operations
-app.use("/api/v1/user", userRoute);        // CRUD routes for user data
-app.use("/api/v1", authRouter);            // Auth routes like /login, /signup
+app.use("v1/profile", profileRouter); // Handles all /profile-related endpoints
+app.use("v1/request", reqRouter);     // Handles /request-related operations
+app.use("v1/user", userRoute);        // CRUD routes for user data
+app.use("v1", authRouter);            // Auth routes like /login, /signup
 
 // Basic health check
 app.get('/', (req, res) => {
-    res.send("<h1>Hello</h1>"); 
+    res.send("<h1>You are on wrong page.Please Reload</h1>"); 
 });
 
 // ---------------------------------------------
