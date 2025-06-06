@@ -60,10 +60,11 @@ app.use(fileupload({
 // ---------------------------------------------
 // 🛣️ Routes
 // ---------------------------------------------
-app.use("v1/profile", profileRouter); // Handles all /profile-related endpoints
-app.use("v1/request", reqRouter);     // Handles /request-related operations
-app.use("v1/user", userRoute);        // CRUD routes for user data
-app.use("v1", authRouter);            // Auth routes like /login, /signup
+app.use("/api/profile", profileRouter);
+app.use("/api/request", reqRouter);
+app.use("/api/user", userRoute);
+app.use("/api", authRouter);
+
 
 // Basic health check
 app.get('/', (req, res) => {
