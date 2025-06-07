@@ -7,7 +7,7 @@ const { authorization } = require("../controllers/authorization"); // Middleware
 const { statusReq, reviewReq } = require("../controllers/connectionReq"); // Request action handlers
 
 //to send request
-reqRouter.post("/send/:status/:toUserId", authorization, statusReq);
-reqRouter.post("/review/:status/:requestId", authorization, reviewReq);
+reqRouter.post("/request/send/:status/:toUserId", authorization, statusReq);
+reqRouter.post("/request/review/:status/:requestId", authorization, reviewReq);
 
 module.exports = reqRouter;
