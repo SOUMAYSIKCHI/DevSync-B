@@ -6,10 +6,10 @@ const { authorization } = require("../controllers/authorization"); // Middleware
 const { requestReceived, connections, feed } = require("../controllers/userConnection"); // Controller functions
 
 
-userRoute.get("/request/received", authorization, requestReceived);
+userRoute.get("/user/request/received", authorization, requestReceived);
 
-userRoute.get("/connections", authorization, connections);
+userRoute.get("/user/connections", authorization, connections);
 
-userRoute.get("/feed",authorization,feed);
+userRoute.get("/user/feed",authorization,feed);
 
 module.exports = userRoute;
