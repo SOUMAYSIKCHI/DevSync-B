@@ -20,7 +20,7 @@ const initializeSocket = async (server) => {
     // Join chat
     socket.on("joinChat", ({ userName, curr_userId, targetUserId }) => {
       const roomId = getSecretRoomId({ curr_userId, targetUserId });
-      console.log(userName, "Joined room :", roomId);
+      // console.log(userName, "Joined room :", roomId);
       socket.join(roomId);
     });
 
@@ -39,7 +39,7 @@ const initializeSocket = async (server) => {
           });
 
           if (data.length === 0) {
-             console.log("Connection not accepted — message not sent.");
+             // console.log("Connection not accepted — message not sent.");
              socket.emit("connectionDenied", {
                 reason: "Connection request not accepted. You cannot send messages.",
                 targetUserId,
@@ -75,7 +75,7 @@ const initializeSocket = async (server) => {
       }
     ),
       socket.on("disconnect", () => {
-        console.log("⚡️ Socket disconnected:", socket.id);
+        // console.log("⚡️ Socket disconnected:", socket.id);
       });
   });
 };
