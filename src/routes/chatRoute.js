@@ -3,7 +3,7 @@ const chatRouter = express.Router(); // Initialize a router instance for profile
 const Chat = require("../models/chat");
 const { authorization } = require("../controllers/authorization"); // Middleware to protect routes
 
-chatRouter.get("/:targetUserId",authorization,async(req,res)=>{
+chatRouter.get("/chat/:targetUserId",authorization,async(req,res)=>{
     const userId = req.user._id;
     const {targetUserId} =req.params;
     try{
