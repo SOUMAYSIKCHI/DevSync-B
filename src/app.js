@@ -24,7 +24,7 @@ initializeSocket(server); // ✅ connect sockets
 cloudinary.cloudinaryConnect();
 
 app.use(cors({
-  origin:'http://3.109.253.167',
+  origin:['http://3.109.253.167','http://localhost:5173'],
   credentials:true,
 }));
 
@@ -44,11 +44,11 @@ app.use(fileupload({
     useTempFiles : true,
     tempFileDir : tempDir
 }));
-app.use("/api/profile", profileRouter);
-app.use("/api/request", reqRouter);
-app.use("/api/user", userRoute);
-app.use("/api/chat",chatRoute);
-app.use("/api", authRouter);
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", reqRouter);
+app.use("/", userRoute);
+app.use("/",chatRoute);
 
 
 // Basic health check
