@@ -1,7 +1,5 @@
-// ---------------------------------------------
-// 📦 Required External Modules
-// ---------------------------------------------
 const express = require('express'); // Core web framework
+require("dotenv").config();
 const cookieParser = require("cookie-parser"); // To parse cookies from HTTP requests
 const mongoSanitize = require('express-mongo-sanitize'); // Prevents NoSQL injection
 const helmet = require("helmet"); // Adds security headers
@@ -10,31 +8,23 @@ const cors = require("cors");
 const fileupload = require("express-fileupload");
 const path = require("path");
 const fs = require("fs");
+const http = require("http");
+const app = express();
 
-// ---------------------------------------------
-// 📁 Route Modules
-// ---------------------------------------------
 const authRouter = require("./routes/authRoute"); // Handles /login, /register etc.
 const profileRouter = require("./routes/profieRoute"); // User profile related endpoints
 const reqRouter = require("./routes/requestsRoute"); // Handles user-generated requests
 const userRoute = require('./routes/userRoutes'); // Admin/user management APIs
-
-// ---------------------------------------------
-// 🚀 App Initialization
-// ---------------------------------------------
-const app = express(); // Initialize Express app
-
-// ---------------------------------------------
-// ☁️ Cloudinary Initialization (before DB and routes)
-// ---------------------------------------------
 const cloudinary = require("./config/cloudinary");
+const initializeSocket = require('./utils/socket'); // ✅ USE this, don’t redefine
+const chatRoute = require("./routes/chatRoute");
+const server = http.createServer(app);
+initializeSocket(server); // ✅ connect sockets
+
 cloudinary.cloudinaryConnect();
 
-// ---------------------------------------------
-// 🔒 Global Middlewares
-// ---------------------------------------------
 app.use(cors({
-  origin:'',
+  origin:'http://3.109.253.167',
   credentials:true,
 }));
 
@@ -54,15 +44,10 @@ app.use(fileupload({
     useTempFiles : true,
     tempFileDir : tempDir
 }));
-
-
-
-// ---------------------------------------------
-// 🛣️ Routes
-// ---------------------------------------------
 app.use("/api/profile", profileRouter);
 app.use("/api/request", reqRouter);
 app.use("/api/user", userRoute);
+app.use("/api/chat",chatRoute);
 app.use("/api", authRouter);
 
 
@@ -71,8 +56,7 @@ app.get('/', (req, res) => {
     res.send("<h1>You are on wrong page.Please Reload</h1>"); 
 });
 
-// ---------------------------------------------
-// 🚨 Centralized Error-Handling Middleware
+
 // ---------------------------------------------
 app.use((err, req, res, next) => {
   console.error('⚠️ Unexpected error:', err);
@@ -82,13 +66,11 @@ app.use((err, req, res, next) => {
   });
 });
 
-// ---------------------------------------------
-// 🗄️ Database Connection & Server Startup
-// ---------------------------------------------
+
 connectToDB()
   .then(() => {
     console.log("✅ Database Connected");
-    app.listen(3300, () => {
+    server.listen(3300, () => {
       console.log("🚀 Server is running at http://localhost:3300");
     });
   })
