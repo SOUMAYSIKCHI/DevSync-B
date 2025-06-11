@@ -39,7 +39,7 @@ const imageUpload = async (file) => {
       throw new Error(`File format '${fileType}' not supported. Supported formats: ${supportedTypes.join(', ')} in fileUpload file`);
     }
 
-    const maxSize = 15 * 1024 * 1024; 
+    const maxSize = 20 * 1024 * 1024; 
     if (file.size > maxSize) {
       throw new Error("File size too large. Maximum allowed size is 5MB");
     }
