@@ -35,11 +35,3 @@ OTPSchema.pre("save",async function(next){
 })
 module.exports = mongoose.model("OTP",OTPSchema);
 
-// [User Request] ─▶ [OTP Created] ─▶ [Pre-save Hook] ─▶ [Send Email via Nodemailer]
-//                                     │
-//                                     └──> [Verification Email Sent] ─▶ [Save OTP in DB]
-// User triggers an event that generates an OTP (e.g., during sign-up).
-// A new document is created in the OTP model.
-// Before the document is saved, the pre("save") hook sends the OTP email.
-// If the email sends successfully, the OTP is persisted with a 5-minute expiration.
-// If the email fails, the error is logged but the document is still saved (optional handling here).

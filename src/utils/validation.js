@@ -1,7 +1,7 @@
 const validator = require("validator");
 
 const ValidSignupData = (req)=>{
-    const {firstName,lastName,password} = req.body;
+    const {firstName,password} = req.body;
     if(firstName==="") {
         throw new Error("Name is not valid")
     }else if(!validator.isStrongPassword(password)){

@@ -1,6 +1,5 @@
 const cloudinary = require("cloudinary").v2;
-const mime = require("mime-types"); // Make sure this is installed via npm
-
+const mime = require("mime-types"); 
 async function uploadFileToCloudinary(file, folder, quality) {
   const options = { 
     folder, 
@@ -30,7 +29,7 @@ const imageUpload = async (file) => {
       fileType = fileName.substring(lastDotIndex + 1).toLowerCase();
     }
 
-    // Fallback to MIME type
+    
     if (!fileType && file.mimetype) {
       fileType = mime.extension(file.mimetype);
     }
@@ -39,7 +38,7 @@ const imageUpload = async (file) => {
       throw new Error(`File format '${fileType}' not supported. Supported formats: ${supportedTypes.join(', ')} in fileUpload file`);
     }
 
-    const maxSize = 5 * 1024 * 1024;
+    const maxSize = 30 * 1024 * 1024;
     if (file.size > maxSize) {
       throw new Error("File size too large. Maximum allowed size is 5MB");
     }
@@ -52,11 +51,10 @@ const imageUpload = async (file) => {
   }
 };
 
-// Function to delete image from Cloudinary
+
 const deleteImageFromCloudinary = async (publicId) => {
   try {
-    const result = await cloudinary.uploader.destroy(publicId);
-        
+    const result = await cloudinary.uploader.destroy(publicId);   
     return result;
   } catch (error) {
     console.error(`Failed to delete image ${publicId}:`, error.message);
@@ -71,11 +69,10 @@ const extractPublicIdFromUrl = (url) => {
       return null;
     }
 
-    // Handle both HTTP and HTTPS URLs
+    
     const urlObj = new URL(url);
     const pathname = urlObj.pathname;
     
-    // Split the pathname and find the upload segment
     const pathParts = pathname.split('/');
     const uploadIndex = pathParts.findIndex(part => part === 'upload');
     
@@ -84,10 +81,8 @@ const extractPublicIdFromUrl = (url) => {
       return null;
     }
 
-    // Extract everything after upload and version (if present)
     let relevantParts = pathParts.slice(uploadIndex + 1);
     
-    // Remove version if present (starts with 'v' followed by numbers)
     if (relevantParts.length > 0 && /^v\d+$/.test(relevantParts[0])) {
       relevantParts = relevantParts.slice(1);
     }
@@ -97,7 +92,6 @@ const extractPublicIdFromUrl = (url) => {
       return null;
     }
     
-    // Join all parts and remove file extension from the last part
     const publicIdWithExtension = relevantParts.join('/');
     const lastDotIndex = publicIdWithExtension.lastIndexOf('.');
     
@@ -112,10 +106,8 @@ const extractPublicIdFromUrl = (url) => {
   }
 };
 
-// Function to validate image URL
 const validateImageUrl = (url) => {
-  if (!url || url === "") return true; // Empty URLs are allowed
-  
+  if (!url || url === "") return true; 
   try {
     const urlObj = new URL(url);
     return urlObj.hostname.includes('cloudinary.com');

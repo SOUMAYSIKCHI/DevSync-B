@@ -1,16 +1,9 @@
 const validator = require("validator");
 
-// Fields that cannot be updated via profile update
 const RESTRICTED_FIELDS = [
-  "_id",
   "emailId",
   "password",
-  "createdAt",
-  "updatedAt",
-  "__v",
 ];
-
-// Valid updateable fields
 const ALLOWED_FIELDS = [
   "firstName",
   "lastName",
@@ -94,7 +87,6 @@ const profileValidator = (req) => {
       console.log("About section too long - maximum 200 characters");
       return false;
     }
-    // Parse skills if it's a JSON string
     if (typeof req.body.skills === "string") {
       try {
         req.body.skills = JSON.parse(req.body.skills);
@@ -114,8 +106,8 @@ const profileValidator = (req) => {
         return false;
       }
       for (const skill of req.body.skills) {
-        if (typeof skill !== "string" || skill.length > 12) {
-          console.log("Each skill must be a string with maximum 12 characters");
+        if (typeof skill !== "string" || skill.length > 20) {
+          console.log("Each skill must be a string with maximum 20 characters");
           return false;
         }
       }

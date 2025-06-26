@@ -118,7 +118,6 @@ const getVerificationEmailHTML = (otp) => `
 </html>
 `;
 
-
 const getResetEmailHTML = (otp) =>`
 <!DOCTYPE html>
 <html lang="en">

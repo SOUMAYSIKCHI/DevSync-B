@@ -10,6 +10,7 @@
   "author": "Soumay Sikchi",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.826.0",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.6.1",
     "cookie-parser": "^1.4.7",
@@ -27,6 +28,7 @@
     "multer": "^2.0.0",
     "nodemailer": "^7.0.3",
     "nodemon": "^3.1.9",
+    "socket.io": "^4.8.1",
     "validator": "^13.12.0"
   }
 }

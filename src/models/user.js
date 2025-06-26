@@ -69,7 +69,6 @@ const userSchema = new mongoose.Schema({
     },
     validate: {
       validator: function(arr) {
-        // Ensure array has exactly 6 elements
         if (arr.length !== 6) return false;
                
       },
@@ -93,13 +92,11 @@ const userSchema = new mongoose.Schema({
     },
   },
 }, {
-  timestamps: true // Add createdAt and updatedAt timestamps
+  timestamps: true 
 });
 
-// Pre-save middleware to ensure galleryUrls always has 6 elements
 userSchema.pre('save', function(next) {
   if (this.galleryUrls) {
-    // Ensure exactly 6 elements
     while (this.galleryUrls.length < 6) {
       this.galleryUrls.push("");
     }
@@ -112,14 +109,12 @@ userSchema.pre('save', function(next) {
   next();
 });
 
-// Instance method to get non-empty gallery URLs with their indices
 userSchema.methods.getActiveGalleryImages = function() {
   return this.galleryUrls
     .map((url, index) => ({ url, index }))
     .filter(item => item.url && item.url !== "");
 };
 
-// Instance method to update a specific gallery image
 userSchema.methods.updateGalleryImage = function(index, url) {
   if (index >= 0 && index < 6) {
     this.galleryUrls[index] = url || "";

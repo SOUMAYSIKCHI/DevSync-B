@@ -59,13 +59,11 @@ const verifyOTP = async (req, res) => {
       return res.status(400).json({success: false, message: "Invalid or expired OTP." });
     }
 
-    // OTP valid — delete all OTPs for this email for security
     await OTP.deleteMany({ emailId });
 
     // Sign token with emailId key for consistent verification
     const token = jwt.sign({ emailId }, process.env.SECRET_KEY, { expiresIn: "10m" });
 
-    // Set HTTP-only secure cookie with token
     res.cookie("email-token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -124,7 +122,6 @@ const signup = async (req, res) => {
   try {
     const { firstName, lastName, password } = req.body;
 
-    // Validate signup data (implement your validation logic inside ValidSignupData)
     ValidSignupData(req);
 
     const emailId = req.user.emailId;
@@ -152,6 +149,7 @@ const signup = async (req, res) => {
 
 const resetPass = async(req,res) =>{
     try{
+        console.log(res);
         const {emailId} = req.body;
         if(!validator.isEmail(emailId)) {
             throw new Error("Invalid email format.");
@@ -209,7 +207,7 @@ const verifyResetOTP = async (req, res) => {
             throw new Error("User not found during update.");
         }
 
-        await OTP.deleteMany({ emailId }); // Clean up OTPs after use
+        await OTP.deleteMany({ emailId });
 
         return res.status(200).json({
             success: true,
@@ -256,7 +254,7 @@ const login = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "Strict",
-      maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days
+      maxAge: 15 * 24 * 60 * 60 * 1000, 
     });
 
     return res.status(200).json({

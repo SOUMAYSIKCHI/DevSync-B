@@ -35,7 +35,7 @@ const profileUpdate = async (req, res) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     }
-    // Remove avatar if marked
+   
     if (req.body.removedAvatar === "true" && loggedInUser.avatarUrl) {
       const publicId = extractPublicIdFromUrl(loggedInUser.avatarUrl);
       if (publicId) await deleteFromCloudinary(publicId);
@@ -53,25 +53,25 @@ const profileUpdate = async (req, res) => {
       }
     }
 
-    // Update non-gallery, non-avatar fields
+    
     Object.keys(req.body).forEach((key) => {
       loggedInUser[key] = req.body[key];
     });
     const normalizeFile = (file) => {
-      if (Array.isArray(file)) return file[0]; // Take the first one
+      if (Array.isArray(file)) return file[0]; 
        return file;
     };
 
 
-    // Handle avatar upload and deletion of old avatar
+  
     if (req.files?.avatarFile) {
-      const file = normalizeFile(req.files.avatarFile); // ✅ normalized
+      const file = normalizeFile(req.files.avatarFile); 
       const oldAvatarUrl = loggedInUser.avatarUrl;
-      // Upload new avatar
+     
       const uploadResponse = await imageUpload(file);
       loggedInUser.avatarUrl = uploadResponse.secure_url;
 
-      // Delete old avatar from Cloudinary if it exists
+      
       if (oldAvatarUrl && oldAvatarUrl !== "") {
         try {
           const publicId = extractPublicIdFromUrl(oldAvatarUrl);
@@ -83,12 +83,9 @@ const profileUpdate = async (req, res) => {
         }
       }
     }
-
-    // Initialize galleryUrls array if it doesn't exist or ensure it has 6 slots
     if (!loggedInUser.galleryUrls) {
       loggedInUser.galleryUrls = new Array(6).fill("");
     } else {
-      // Ensure array has exactly 6 elements
       while (loggedInUser.galleryUrls.length < 6) {
         loggedInUser.galleryUrls.push("");
       }
@@ -97,7 +94,6 @@ const profileUpdate = async (req, res) => {
       }
     }
 
-    // Handle gallery image uploads
     const galleryUploadPromises = [];
 
     for (let i = 0; i < 6; i++) {
@@ -105,12 +101,9 @@ const profileUpdate = async (req, res) => {
       const file = req.files?.[fileFieldName];
 
       if (file) {
-        // New image is being uploaded for this index
         const oldImageUrl = loggedInUser.galleryUrls[i];
 
-        // Upload new image
         const uploadPromise = imageUpload(file).then(async (uploadResponse) => {
-          // Delete old image from Cloudinary if it exists
           if (oldImageUrl && oldImageUrl !== "") {
             try {
               const publicId = extractPublicIdFromUrl(oldImageUrl);
@@ -126,20 +119,15 @@ const profileUpdate = async (req, res) => {
 
         galleryUploadPromises[i] = uploadPromise;
       } else {
-        // No new file for this index, keep existing URL
         galleryUploadPromises[i] = Promise.resolve(
           loggedInUser.galleryUrls[i] || ""
         );
       }
     }
-
-    // Wait for all uploads to complete
     const galleryUrls = await Promise.all(galleryUploadPromises);
 
-    // Update the gallery URLs
     loggedInUser.galleryUrls = galleryUrls;
 
-    // Save the updated user
     await loggedInUser.save();
 
     res.status(200).json({
@@ -155,25 +143,19 @@ const profileUpdate = async (req, res) => {
   }
 };
 
-// Helper function to extract public ID from Cloudinary URL
 const extractPublicIdFromUrl = (url) => {
   try {
     const urlParts = url.split("/");
     const uploadIndex = urlParts.findIndex((part) => part === "upload");
     if (uploadIndex === -1) return null;
-
-    // Find the part after version (if exists) or after upload
     let publicIdWithExtension = urlParts[urlParts.length - 1];
-
-    // Remove file extension
     const lastDotIndex = publicIdWithExtension.lastIndexOf(".");
     const publicId =
       lastDotIndex !== -1
         ? publicIdWithExtension.substring(0, lastDotIndex)
         : publicIdWithExtension;
 
-    // Include folder path if exists
-    const folderParts = urlParts.slice(uploadIndex + 2, -1); // Skip upload and version
+    const folderParts = urlParts.slice(uploadIndex + 2, -1); 
     if (folderParts.length > 0 && !folderParts[0].startsWith("v")) {
       return folderParts.join("/") + "/" + publicId;
     }
@@ -185,7 +167,6 @@ const extractPublicIdFromUrl = (url) => {
   }
 };
 
-// Helper function to delete image from Cloudinary
 const deleteFromCloudinary = async (publicId) => {
   const cloudinary = require("cloudinary").v2;
   try {

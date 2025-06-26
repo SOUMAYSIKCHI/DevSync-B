@@ -34,8 +34,8 @@ const connections = async(req,res) => {
                 : row.fromUserId;
 
             return {
-                ...connectedUser._doc, // Spread user fields
-                connectionUpdatedAt: row.updatedAt, // Add timestamp from connection document
+                ...connectedUser._doc, 
+                connectionUpdatedAt: row.updatedAt, 
             };
         });
 
@@ -53,10 +53,10 @@ const feed = async (req, res) => {
     const USER_SAFE_DATA = "firstName lastName about age skills avatarUrl galleryUrls GithubUrl linkdlnUrl";
     
     try {
-        const loggedInUserId = req.user._id.toString(); // always exclude self
+        const loggedInUserId = req.user._id.toString(); 
         const page = parseInt(req.query.page) || 1;
         let limit = parseInt(req.query.limit) || 10;
-        limit = Math.min(limit, 50); // enforce max cap
+        limit = Math.min(limit, 50); 
         const skip = (page - 1) * limit;
 
         // Step 1: Fetch all connections involving current user
