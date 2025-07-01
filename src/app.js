@@ -18,6 +18,7 @@ const userRoute = require('./routes/userRoutes');
 const cloudinary = require("./config/cloudinary");
 const initializeSocket = require('./utils/socket'); 
 const chatRoute = require("./routes/chatRoute");
+const adminRoute = require("./routes/adminRoute");
 const server = http.createServer(app);
 initializeSocket(server); 
 
@@ -47,6 +48,7 @@ app.use("/", profileRouter);
 app.use("/", reqRouter);
 app.use("/", userRoute);
 app.use("/",chatRoute);
+app.use("/",adminRoute);
 
 
 app.get('/', (req, res) => {
@@ -54,7 +56,7 @@ app.get('/', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.error('⚠️ Unexpected error:', err);
+  console.error('⚠️Unexpected error:', err);
   res.status(err.status || 500).json({
     success: false,
     message: err.message || "Internal Server Error",

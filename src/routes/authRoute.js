@@ -2,7 +2,6 @@ const express = require("express");
 const authRouter = express.Router();
 const rateLimit = require("express-rate-limit");
 const { start, login, signup, logout, verifyOTP,verifySignupToken,resetPass,verifyResetOTP } = require("../controllers/authentication");
-
 const loginLimiter = rateLimit({
   windowMs: 10 * 60 * 1000,
   max: 5,

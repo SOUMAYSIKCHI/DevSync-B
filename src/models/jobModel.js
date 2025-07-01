@@ -23,7 +23,6 @@ const jobSchema = new mongoose.Schema({
   eligibleBatch: {
     type: String,
     required: true,
-    match: /^[0-9]{4}-[0-9]{4}$/, 
   },
   skillsRequired: {
     type: [String],
@@ -32,10 +31,6 @@ const jobSchema = new mongoose.Schema({
   salary: {
     type: String,
     required: true,
-    validate: {
-      validator: (val) => /^₹[0-9]+(-[0-9]+)?\s?LPA$/.test(val),
-      message: "Salary format must be like '₹15-25 LPA'",
-    },
   },
   description: {
     type: String,

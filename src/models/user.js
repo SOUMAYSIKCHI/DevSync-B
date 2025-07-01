@@ -91,6 +91,11 @@ const userSchema = new mongoose.Schema({
         "Skills array should not exceed 5 items, and each must be <= 12 characters.",
     },
   },
+   role: {
+    type: String,
+    enum: ['admin', 'student'],
+    default: 'student'
+  },
 }, {
   timestamps: true 
 });
